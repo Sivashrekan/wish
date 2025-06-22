@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Hide scrollbars caused by confetti */
+        }
+        .font-dancing-script {
+            font-family: 'Dancing Script', cursive;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place canvas behind everything */
+            pointer-events: none; /* Allow clicking through the canvas */
+        }
+        .side-card {
+    transition: 
+        opacity 0.5s, 
+        transform 0.5s, 
+        scale 0.5s;
+    will-change: opacity, transform;
+}
+.group:hover .side-card,
+.group:focus-within .side-card {
+    opacity: 1;
+    scale: 1;
+    pointer-events: auto;
+}
+.left-card {
+    transform: translate(-120%, -50%) scale(0.75);
+}
+.right-card {
+    transform: translate(120%, -50%) scale(0.75);
+}
+.group:hover .left-card,
+.group:focus-within .left-card {
+    transform: translate(-140%, -50%) scale(1);
+}
+.group:hover .right-card,
+.group:focus-within .right-card {
+    transform: translate(140%, -50%) scale(1);
+}
+    </style>
+</head>
+<!-- ...existing code... -->
+<body class="bg-gradient-to-br from-blue-200 via-indigo-300 to-purple-400 flex items-center justify-center min-h-screen">
+
+    <!-- Canvas for confetti animation -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Card group wrapper for positioning -->
+    <div class="relative flex items-center justify-center group">
+
+        <!-- Left side card -->
+        <div class="side-card left-card absolute left-0 top-1/2 -translate-y-1/2 opacity-0 scale-75 pointer-events-none transition-all duration-500 z-0">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-4 text-center w-40 h-52 flex flex-col items-center justify-center">
+                <img 
+                    class="object-cover w-20 h-20 rounded-full border-2 border-white shadow mb-2" 
+                    src="joshuva.png" 
+                    alt="Birthday Boy"
+                    onerror="this.onerror=null; this.src='https://placehold.co/80x80/8B5CF6/FFFFFF?text=Happy';"
+                >
+                <span class="font-dancing-script text-lg text-gray-700">Birthday Boy</span>
+            </div>
+        </div>
+
+        <!-- Main content card -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 md:p-10 text-center max-w-sm mx-4 transform transition-all hover:scale-105 duration-500 z-10 group-hover:z-20 main-card">
+            <h1 class="font-dancing-script text-5xl md:text-6xl text-gray-800 mb-4">Happy Birthday!</h1>
+
+            <div class="relative w-48 h-48 md:w-56 md:h-56 mx-auto mb-6">
+                <div class="absolute inset-0 bg-gradient-to-tr from-pink-400 to-yellow-400 rounded-full animate-pulse"></div>
+                <img 
+                    id="birthday-person-img"
+                    class="relative object-cover w-full h-full rounded-full border-4 border-white shadow-lg" 
+                    src="joshuva.png" 
+                    alt="A person celebrating their birthday"
+                    onerror="this.onerror=null; this.src='https://placehold.co/224x224/8B5CF6/FFFFFF?text=Happy\nBirthday!'; this.alt='Placeholder image for birthday person';"
+                >
+            </div>
+
+            <p class="text-gray-700 text-lg">
+                Wishing you a day filled with love, laughter, and unforgettable moments. May this year be your best one yet!<br>by, S.Sivashrekan
+            </p>
+        </div>
+
+        <!-- Right side card -->
+        <div class="side-card right-card absolute right-0 top-1/2 -translate-y-1/2 opacity-0 scale-75 pointer-events-none transition-all duration-500 z-0">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-4 text-center w-40 h-52 flex flex-col items-center justify-center">
+                <img 
+                    class="object-cover w-20 h-20 rounded-full border-2 border-white shadow mb-2" 
+                    src="joshuva.png" 
+                    alt="Birthday Boy"
+                    onerror="this.onerror=null; this.src='https://placehold.co/80x80/8B5CF6/FFFFFF?text=Happy';"
+                >
+                <span class="font-dancing-script text-lg text-gray-700">Birthday Boy Joshuva</span>
+            </div>
+        </div>
+    </div>
+<!-- ...existing code... -->
+    <audio id="birthday-audio" src="birthday.mp3" loop></audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const img = document.getElementById('birthday-person-img');
+        const audio = document.getElementById('birthday-audio');
+        if (img && audio) {
+            img.addEventListener('mouseenter', () => {
+                audio.currentTime = 0;
+                audio.play();
+            });
+            img.addEventListener('mouseleave', () => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        }
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            window.addEventListener('resize', () => {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            });
+
+            const confettiPieces = 150;
+            const confetti = [];
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800'];
+
+            // Initialize confetti particles
+            function initConfetti() {
+                for (let i = 0; i < confettiPieces; i++) {
+                    confetti.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height - height, // Start above the screen
+                        r: Math.random() * 6 + 2, // radius
+                        d: Math.random() * confettiPieces, // density
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        tilt: Math.floor(Math.random() * 10) - 10,
+                        tiltAngleIncrement: Math.random() * 0.07 + 0.05,
+                        tiltAngle: 0
+                    });
+                }
+            }
+
+            // Draw a single frame of the animation
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                confetti.forEach((p, i) => {
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r / 1.5;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + (p.r / 4), p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 4));
+                    ctx.stroke();
+                });
+
+                update();
+            }
+
+            // Update confetti positions for the next frame
+            function update() {
+                let remainingFlakes = 0;
+                confetti.forEach((p, i) => {
+                    p.tiltAngle += p.tiltAngleIncrement;
+                    p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                    p.x += Math.sin(p.d);
+                    p.tilt = Math.sin(p.tiltAngle - (i / 3)) * 15;
+                    
+                    // If confetti is off screen, reset it to the top
+                    if (p.y > height) {
+                        confetti[i] = { ...p, x: Math.random() * width, y: -20 };
+                    }
+
+                    // Stop confetti from going out of horizontal bounds
+                    if (p.x > width + 20) p.x = -20;
+                    if (p.x < -20) p.x = width + 20;
+
+                });
+                
+                requestAnimationFrame(draw);
+            }
+
+            // Start the celebration!
+            initConfetti();
+            draw();
+        });
+    </script>
+</body>
+</html>
